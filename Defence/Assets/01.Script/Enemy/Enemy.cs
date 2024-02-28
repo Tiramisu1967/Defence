@@ -40,7 +40,8 @@ public class Enemy : MonoBehaviour
         {
             if (_wayPointCount >= WayPoints.Length - 1)//wayPointCount가  WayPoints의 길이-1 보다 값이 작을 경우 안에 함수를 실행
             {
-                //GameManager.Inst.playerCharacter.Damaged(Damage);
+                Debug.Log("ddd");
+                GameManager.Inst.playerCharacter.Damaged(Damage);
                 Destroy(gameObject);//해당 오브젝트 삭제
                 return;
             }

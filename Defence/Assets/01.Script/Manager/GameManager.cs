@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Inst
+    public static GameManager Inst//참조를 위해서 
     {
         get; private set;
     }
-    //public PlayerCharacter playerCharacter;
-    //public GuardianUpgradeManager guardianUpgradeManager;
-    //public GuardianBuildManager guardianBuildManager;
+    public PlayerCharacter playerCharacter;//PlayerCharacter 변수를 입력 받을 수 있게 선언한다.
+    public GuardianUpgradeManager guardianUpgradeManager;//GuardianUpgradeManager 변수를 입력 받을 수 있게 선언하다.
+    public GuardianBuildManager guardianBuildManager;//GuardianBuildManager 변수를 입력받을 수 있게 선언한다.
 
     private void Awake()
     {
-        if(Inst == null)
+        if(Inst == null)//만약 inst 함수가 null 값으로 되어있다면 자신 넣는다.
         {
             Inst = this;
         }
         else
         {
-            Destroy(Inst);
+            Destroy(Inst);//아닐 경우 Inst에 입력된 GameManager를 지운다
         }
     }
 
@@ -30,6 +30,6 @@ public class GameManager : MonoBehaviour
     }
     public void EnemyDead(int coin)
     {
-       // playerCharacter.Coin += coin;
+       playerCharacter.Coin += coin;//playerChatacter의 Coin값 coin 값 만큼 증가
     }
 }
