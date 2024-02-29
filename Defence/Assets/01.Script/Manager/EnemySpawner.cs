@@ -1,13 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+
+[CreateAssetMenu(fileName = "WaveInfo", menuName = "Scriptable Object/WaveInfo")]
+public class WaveInfo : ScriptableObject
+{
+    public GameObject[] Enemys;
+    public Dictionary<string, Counting> Count= new Dictionary <string, Counting> ();
+    public int[] WaveEnemyCount;
+
+    public void Wave(int Wavenumber)
+    {
+        for(int i = 0; i < Enemys.Length; i++) 
+        {
+            Count.Add(Enemys[i].name, new Counting(WaveEnemyCount[i], Enemys[i]));
+        }
+    }
+}
+
+public class Counting
+{
+    private int EnemyCount;
+    private GameObject Enemy;
+    public Counting(int enemyCount, GameObject enemy)
+    {
+        this.EnemyCount = enemyCount;
+        this.Enemy = enemy;
+    }
+}
 
 public class EnemySpawner : MonoBehaviour
 {
+    public int Wavenumber = 0;
     public Transform SpawnPosition;
     public GameObject[] WayPoints;
-    public GameObject EnemyPrefab;
+    public WaveInfo[] waveInfo;
     public float SpawnCycleTime = 1f;
+    public TextMeshProUGUI WaveText;
 
     private bool _bCanSpawn = true;
 
@@ -19,13 +49,14 @@ public class EnemySpawner : MonoBehaviour
 
     public void Activate()
     {
-        StartCoroutine(SpawnEnemy());
+        WaveSee();
+       // StartCoroutine(SpawnEnemy());
         //코루틴 시작
     }
 
     public void DeActivate()
     {
-        StopCoroutine(SpawnEnemy());
+      //  StopCoroutine(SpawnEnemy());
         //코루틴 멈춤
     }
 
@@ -33,15 +64,37 @@ public class EnemySpawner : MonoBehaviour
     {
         while (_bCanSpawn)//_bCanSpawn이 true이면 반복 실행
         {
-            yield return new WaitForSeconds(SpawnCycleTime);//SpawnCycleTime만큼 기다리기
-
-            GameObject EnemyInst = Instantiate(EnemyPrefab, SpawnPosition.position, Quaternion.identity);//생성
-            Enemy EnemyCom = EnemyInst.GetComponent<Enemy>();//EnemyInst의 Enemy 스키립트 참조
-            if (EnemyCom)//만약 EnemyCom이 있다면
+            _bCanSpawn = false;
+            for (int i = 0; i < waveInfo[Wavenumber].Enemys.Length; i++) 
             {
-                EnemyCom.WayPoints = WayPoints;//WayPoints(Emeny의) = WayPoints(EmenySpawner의)
+                string name = waveInfo[Wavenumber].Enemys[i].name;
+                for(int j = 0; j < waveInfo[Wavenumber].Count(name); j++)
+                {
+
+                }
             }
+            StartCoroutine(WaveUP());
         }
+    }
+    
+    IEnumerator WaveUP()
+    {
+        
+        yield return new WaitForSeconds(5f);
+        Debug.Log("dddddddd");
+        Wavenumber++;
+        StartCoroutine(WaveSee());
+    }
+
+    IEnumerator WaveSee()
+    {
+        waveInfo[Wavenumber].Wave(Wavenumber);
+        _bCanSpawn = true;
+       // StartCoroutine(SpawnEnemy());
+        WaveText.text = $"WAVE {Wavenumber + 1}";
+        WaveText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        WaveText.gameObject.SetActive(false);
     }
 
 }
