@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+/*
+ * 1-1. Tiles 배열은 Guardian이 건설될 수 있는 타일들을 저장하는 배열.선택할 수 있는 유효한 위치들을 나타냄. 
+ * 이를 위해 FindGameObjectsWithTag 함수를 사용, 태그가 "Tile"로 지정된 모든 게임 오브젝트를 찾고, 그 결과를 Tiles 배열에 저장함.
+ * 1-2. BuildIconPrefab은 Guardian을 건설할 수 있는 위치를 나타내는 아이콘. 처음에 SetActive(false)를 호출하여 비 가시화. 게임 시작 시 아이콘이 표시않아야 함. 
+ */
 public class GuardianBuildManager : MonoBehaviour
 {
     public GameObject[] Tiles;
@@ -45,7 +49,7 @@ public class GuardianBuildManager : MonoBehaviour
     private void UpdateFindFocusTile()
     {
         CurrentFocusTile = null;//null 값으로 초기화
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));//Vector3 변수 mousePosition를 선언 카메라에 포인트 지점(마우스에 위치)를 정의
+        /*Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.nearClipPlane));//Vector3 변수 mousePosition를 선언 카메라에 포인트 지점(마우스에 위치)를 정의
         mousePosition.y = 0f;//mousePosition의 y 값을 0으로 초기화
 
         foreach (var tile in Tiles)//Tiles 배열에 있는 모든 오브젝트를 검사
@@ -58,7 +62,22 @@ public class GuardianBuildManager : MonoBehaviour
                 CurrentFocusTile = tile;//정의
                 break;//나가기
             }
-        }
+        }*/
+        
+          // 마우스 포지션을 스크린 좌표에서 월드 좌표로 변환
+          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+          RaycastHit hitInfo;
+          // RayCast를 통해 타일과의 충돌 검사
+          if (Physics.Raycast(ray, out hitInfo,100,LayerMask.GetMask("Tile")))
+          {
+            // 충돌한 오브젝트가 타일인 경우
+            if (hitInfo.collider.CompareTag("Tile"))
+            {
+                // 충돌한 타일을 현재 포커스 타일로 설정
+                CurrentFocusTile = hitInfo.collider.gameObject;
+            }
+          }
+         
     }
 
     private void UpdateBuildImage()
@@ -76,12 +95,12 @@ public class GuardianBuildManager : MonoBehaviour
                 bFocusTile = true;//bFocusTile를 true로 정의
 
                 bool bCanBuild = GameManager.Inst.playerCharacter.CanUseCoin(NormalGuaridanCost);//bCanBuild을 playerCharacter에 CanUseCoin()함수에 NormalGuaridanCost을 보내어 반환됨 값을 저장
-                Material mat = bCanBuild ? BuildCanMat : BuildCanNotMat;
+                Material mat = bCanBuild ? BuildCanMat : BuildCanNotMat;//1-3. ? : 조건부(삼항) 연산자.조건식이 참이면 첫 번째 피연산자를 반환, 거짓이면 두 번째 피연산자를 반환.
                 BuildIconPrefab.GetComponent<MeshRenderer>().material = mat;//Material 변경
             }
         }
 
-        if (bFocusTile)//bFocusTile가 true면 실행
+        if (bFocusTile)//bFocusTile가 true면 실행,1-4. 이 코드는 현재 마우스 포인터가 Guardian을 건설할 수 있는 위치 위에 있는지 확인. 만약 마우스 포인터가 유효한 타일 위에 있으면 bFocusTile을 true로 설정, 마우스 포인터가 유효한 타일 위에 있을 때 BuildIconPrefab을 활성화
         {
             BuildIconPrefab.gameObject.SetActive(true);//가시화
         }
@@ -114,7 +133,8 @@ public class GuardianBuildManager : MonoBehaviour
                 tile.OwnGuardian = guardianInst.GetComponent<Guardian>();//tile의 OwnGuardian에 guardianInst애 Guardian룰 선언
 
                 OnBuild.Invoke();//호출
-                DeActivateBuildImage();//호출
+                DeActivateBuildImage();//호출. 1-5. CheckToBuildGuardian 함수는 Guardian을 건설하거나 업그레이드하는 데 사용됩니다. 만약 Guardian을 건설할 수 있는 위치에 마우스 포인터가 있고 건설이 가능한 상태이면 BuildIconPrefab을 활성화하고 Guardian을 건설합니다. 그러나 건설이나 업그레이드가 완료된 후에는 다시 마우스 포인터가 유효한 타일 위에 있지 않으므로, BuildIconPrefab을 비활성화하여 아이콘을 숨깁니다.
+                
 
                 return;
             }

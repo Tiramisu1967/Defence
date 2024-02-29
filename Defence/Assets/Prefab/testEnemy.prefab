@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WayPoints: []
   MaxHp: 5
-  MoveSpeed: 10
+  MoveSpeed: 3
   StealCoin: 100
   Damage: 1
 --- !u!1 &7728713806680498441
