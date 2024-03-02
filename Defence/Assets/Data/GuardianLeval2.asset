@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GuardianLeval2
   m_EditorClassIdentifier: Assembly-CSharp::GuardianStatus
   AttackCycleTime: 1
-  AttackRadius: 10
-  Damage: 5
+  AttackRadius: 8
+  Damage: 2
   MaxTargetCount: 1
-  UpgradeCost: 100
+  UpgradeCost: 200
   Color: {r: 1, g: 1, b: 1, a: 1}

@@ -2912,6 +2912,8 @@ MonoBehaviour:
   playerCharacter: {fileID: 1346140916}
   guardianUpgradeManager: {fileID: 941435637}
   guardianBuildManager: {fileID: 941435638}
+  enemySpawner: {fileID: 941435635}
+  lose: 0
 --- !u!114 &941435637
 MonoBehaviour:
   m_ObjectHideFlags: 0

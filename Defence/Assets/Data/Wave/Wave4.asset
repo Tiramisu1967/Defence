@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: Wave4
   m_EditorClassIdentifier: Assembly-CSharp::WaveInfo
-  Enemy: []
-  WaveEnemyCount: 20
-  WavereinforcedEnemyCount: 6
+  Enemys:
+  - {fileID: 7630023530746447342, guid: e89b506a7305ba240927806143c712f9, type: 3}
+  - {fileID: 5481562567890008606, guid: c98f0f9e05c69524b8adf51337be0fbe, type: 3}
+  WaveEnemyCount: 320000000a000000

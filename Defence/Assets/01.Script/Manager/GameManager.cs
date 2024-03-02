@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public PlayerCharacter playerCharacter;//PlayerCharacter 변수를 입력 받을 수 있게 선언한다.
     public GuardianUpgradeManager guardianUpgradeManager;//GuardianUpgradeManager 변수를 입력 받을 수 있게 선언하다.
     public GuardianBuildManager guardianBuildManager;//GuardianBuildManager 변수를 입력받을 수 있게 선언한다.
+    public EnemySpawner enemySpawner;
+    public bool lose = false;
 
     private void Awake()
     {
@@ -26,7 +28,8 @@ public class GameManager : MonoBehaviour
 
     public void GameDefeat()
     {
-
+        lose = true;
+        enemySpawner.DeActivate();
     }
     public void EnemyDead(int coin)
     {

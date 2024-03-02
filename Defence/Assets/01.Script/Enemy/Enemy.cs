@@ -28,6 +28,10 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Inst.lose)
+        {
+            Destroy(this.gameObject);
+        }
         transform.position += _moveDirection * MoveSpeed * Time.deltaTime;
         //_moveDirection * MoveSpeed * Time.deltaTime값 만큼 이동
 
